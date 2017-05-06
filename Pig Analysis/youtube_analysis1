@@ -1,0 +1,7 @@
+infiles = load '/user/ragraw26/FinalProject/Input/youtube_data.csv' using PigStorage(',') as 
+(videoid:chararray,uploader:chararray,age:int,category:chararray,length:int,views:int,rate:int,rating:int,comments:int,related_id:chararray);
+files = FILTER infiles BY category is not null;
+order_rated_video = order files by rating desc;
+top10_rated_video = limit order_rated_video 10;
+final_top10_rated_video = foreach top10_rated_video generate $0,$3,$7;
+STORE final_top10_rated_video INTO '/user/ragraw26/FinalProject/Top10Rated' using PigStorage(',');
